@@ -2045,9 +2045,30 @@ view(const Arg *arg)
 {
 	if ((arg->ui & TAGMASK) == selmon->tagset[selmon->seltags])
 		return;
-	selmon->seltags ^= 1; /* toggle sel tagset */
-	if (arg->ui & TAGMASK)
+
+    if (arg->ui != -2)
+        selmon->tagset[selmon->seltags ^ 1] = selmon->tagset[selmon->seltags];
+
+    if (arg->ui == 0) {
+        if (selmon->tagset[selmon->seltags] << 1 > TAGMASK)
+            selmon->tagset[selmon->seltags] = 1;
+        else
+            selmon->tagset[selmon->seltags] <<= 1;
+    }
+    else if (arg->ui == -1) {
+        if (selmon->tagset[selmon->seltags] >> 1 < 1)
+            selmon->tagset[selmon->seltags] = (TAGMASK + 1) >> 1;
+        else
+            selmon->tagset[selmon->seltags] >>= 1;
+    }
+    else if (arg->ui == -2) {
+        selmon->tagset[selmon->seltags] += selmon->tagset[selmon->seltags ^ 1];
+        selmon->tagset[selmon->seltags ^ 1] = selmon->tagset[selmon->seltags] - selmon->tagset[selmon->seltags ^ 1];
+        selmon->tagset[selmon->seltags] -= selmon->tagset[selmon->seltags ^ 1];
+    }
+	else if (arg->ui & TAGMASK)
 		selmon->tagset[selmon->seltags] = arg->ui & TAGMASK;
+
 	focus(NULL);
 	arrange(selmon);
 }

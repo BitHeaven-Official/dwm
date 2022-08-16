@@ -738,7 +738,7 @@ drawstatusbar(Monitor *m, int bh, char* stext) {
         isCode = 0;
     text = p;
 
-    w += 2; /* 1px padding on both sides */
+//    w += 2; /* 1px padding on both sides */
     ret = m->ww - w;
     x = m->ww - w - 2 * hpb;
 

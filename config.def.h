@@ -8,7 +8,7 @@ static const unsigned int snap      = 32;       /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const int horizpadbar        = 5;
-static const int vertpadbar         = 6;
+static const int vertpadbar         = 8;
 static const int vertpadstat        = 0;
 static const char *fonts[]          = {
     "Ubuntu Mono:style=Bold:size=10:antialias=true:autohint=true",

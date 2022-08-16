@@ -740,7 +740,7 @@ drawstatusbar(Monitor *m, int bh, char* stext) {
 
     w += 2; /* 1px padding on both sides */
     ret = m->ww - w;
-    x = m->ww - w - 2 * vpb;
+    x = m->ww - w - 2 * hpb;
 
     drw_setscheme(drw, scheme[LENGTH(colors)]);
     drw->scheme[ColFg] = scheme[SchemeNorm][ColFg];
@@ -839,10 +839,18 @@ drawbar(Monitor *m)
 		w = TEXTW(tags[i]);
 		drw_setscheme(drw, scheme[m->tagset[m->seltags] & 1 << i ? SchemeSel : SchemeNorm]);
 		drw_text(drw, x, 0, w, bh, lrpad / 2, tags[i], urg & 1 << i);
-		if (occ & 1 << i)
-			drw_rect(drw, x + boxs, boxs, boxw, boxw,
-				m == selmon && selmon->sel && selmon->sel->tags & 1 << i,
-				urg & 1 << i);
+		if (occ & 1 << i) {
+//			drw_rect(drw, x + boxs, boxs, boxw, boxw,
+//				m == selmon && selmon->sel && selmon->sel->tags & 1 << i,
+//				urg & 1 << i);
+			drw_rect(drw, x + w / 3, 0, w / 3, 2, 0, 0);
+			drw_rect(drw, x + w / 3, bh - 2, w / 3, 2, 0, 0);
+            if (m == selmon && selmon->sel && selmon->sel->tags & 1 << i) {
+    			drw_rect(drw, x, 0, w, 2, 0, 0);
+    			drw_rect(drw, x, bh - 2, w, 2, 0, 0);
+            }
+        }
+
 		x += w;
 	}
 	w = blw = TEXTW(m->ltsymbol);

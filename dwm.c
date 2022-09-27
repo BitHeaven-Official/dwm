@@ -142,6 +142,11 @@ typedef struct {
 	int monitor;
 } Rule;
 
+typedef struct {
+	const char** command;
+	const char* name;
+} Launcher;
+
 /* function declarations */
 static void applyrules(Client *c);
 static int applysizehints(Client *c, int *x, int *y, int *w, int *h, int interact);
@@ -446,16 +451,35 @@ buttonpress(XEvent *e)
 		if (i < LENGTH(tags)) {
 			click = ClkTagBar;
 			arg.ui = 1 << i;
-		} else if (ev->x < x + blw)
+			goto execute_handler;
+		} else if (ev->x < x + blw) {
 			click = ClkLtSymbol;
-		else
-			click = ClkStatusText;
+			goto execute_handler;
+		}
+		
+		x += blw;
+
+		for(i = 0; i < LENGTH(launchers); i++) {
+			x += TEXTW(launchers[i].name);
+			
+			if (ev->x < x) {
+				Arg a;
+				a.v = launchers[i].command;
+				spawn(&a);
+				return;
+			}
+		}
+		
+		click = ClkStatusText;
 	} else if ((c = wintoclient(ev->window))) {
 		focus(c);
 		restack(selmon);
 		XAllowEvents(dpy, ReplayPointer, CurrentTime);
 		click = ClkClientWin;
 	}
+	
+execute_handler:
+	
 	for (i = 0; i < LENGTH(buttons); i++)
 		if (click == buttons[i].click && buttons[i].func && buttons[i].button == ev->button
 		&& CLEANMASK(buttons[i].mask) == CLEANMASK(ev->state))
@@ -824,10 +848,7 @@ drawbar(Monitor *m)
 
 	/* draw status first so it can be overdrawn by tags later */
 	if (m == selmon) { /* status is only drawn on selected monitor */
-//		drw_setscheme(drw, scheme[SchemeNorm]);
-//		tw = TEXTW(stext); /* - lrpad + 2; * 2px right padding */
-//		drw_text(drw, m->ww - tw - 2 * hpb, 0, tw, bh, lrpad / 2, stext, 0);
-        tw = m->ww - drawstatusbar(m, bh, stext);
+        	tw = m->ww - drawstatusbar(m, bh, stext);
 	}
 
 	for (c = m->clients; c; c = c->next) {
@@ -857,6 +878,13 @@ drawbar(Monitor *m)
 	w = blw = TEXTW(m->ltsymbol);
 	drw_setscheme(drw, scheme[SchemeNorm]);
 	x = drw_text(drw, x, 0, w, bh, lrpad / 2, m->ltsymbol, 0);
+	
+	for (i = 0; i < LENGTH(launchers); i++)
+	{
+		w = TEXTW(launchers[i].name);
+		drw_text(drw, x, 0, w, bh, lrpad / 2, launchers[i].name, urg & 1 << i);
+		x += w;
+	}
 
 	if ((w = m->ww - tw - x) > bh) {
 		drw_setscheme(drw, scheme[SchemeNorm]);

@@ -114,7 +114,10 @@ static Key keys[] = {
 	{ SUPERKEY,                     XK_comma,                 focusmon,       {.i = -1 } },
 	{ SUPERKEY,                     XK_period,                focusmon,       {.i = +1 } },
 	{ SUPERKEY|ShiftMask,           XK_comma,                 tagmon,         {.i = -1 } },
-	{ SUPERKEY|ShiftMask,           XK_period,                tagmon,         {.i = +1 } },
+	{ SUPERKEY|ShiftMask,           XK_period,                tagmon,         {.i = +1 } },	
+	{ MODKEY,                       XK_minus,		  setgaps,        {.i = -1 } },
+	{ MODKEY,                       XK_equal,		  setgaps,        {.i = +1 } },
+	{ MODKEY|ShiftMask,             XK_equal, 		  setgaps,        {.i = 0  } },
 	TAGKEYS(                        XK_1,                                     0)
 	TAGKEYS(                        XK_2,                                     1)
 	TAGKEYS(                        XK_3,                                     2)

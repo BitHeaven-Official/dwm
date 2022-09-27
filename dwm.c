@@ -214,6 +214,7 @@ static void tagmon(const Arg *arg);
 static void tile(Monitor *m);
 static void togglebar(const Arg *arg);
 static void togglefloating(const Arg *arg);
+static void togglefullscr(const Arg *arg);
 static void togglealwaysontop(const Arg *arg);
 static void toggletag(const Arg *arg);
 static void toggleview(const Arg *arg);
@@ -1870,6 +1871,13 @@ togglefloating(const Arg *arg)
 	else
 		selmon->sel->isalwaysontop = 0; /* disabled, turn this off too */
 	arrange(selmon);
+}
+
+void
+togglefullscr(const Arg *arg)
+{
+	if(selmon->sel)
+		setfullscreen(selmon->sel, !selmon->sel->isfullscreen);
 }
 
 void

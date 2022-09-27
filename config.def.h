@@ -119,7 +119,7 @@ static Key keys[] = {
 	{ SUPERKEY,                     XK_equal,		  setgaps,        {.i = +1 } },
 	{ SUPERKEY|ShiftMask,           XK_equal, 		  setgaps,        {.i = 0  } },
 	{ SUPERKEY|ShiftMask,           XK_t,			  togglealwaysontop, {0} },
-	{ SUPERKEY|ShiftMask,             XK_f,			  togglefullscr,  {0} },
+	{ SUPERKEY|ShiftMask,           XK_f,			  togglefullscr,  {0} },
 	TAGKEYS(                        XK_1,                                     0)
 	TAGKEYS(                        XK_2,                                     1)
 	TAGKEYS(                        XK_3,                                     2)

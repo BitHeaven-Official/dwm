@@ -32,6 +32,14 @@ static const char *colors[][3]      = {
 /* tagging */
 static const char *tags[] = { "", "", "3", "", "5", "6", "7", "8", "" };
 
+/* launcher commands (They must be NULL terminated) */
+static const char* bhev[] = { "firefox", "bhev.ru", NULL };
+
+static const Launcher launchers[] = {
+       /* command       name to display */
+	{ bhev,         "SHRT" },
+};
+
 static const Rule rules[] = {
 	/* xprop(1):
 	 *	WM_CLASS(STRING) = instance, class
@@ -114,7 +122,12 @@ static Key keys[] = {
 	{ SUPERKEY,                     XK_comma,                 focusmon,       {.i = -1 } },
 	{ SUPERKEY,                     XK_period,                focusmon,       {.i = +1 } },
 	{ SUPERKEY|ShiftMask,           XK_comma,                 tagmon,         {.i = -1 } },
-	{ SUPERKEY|ShiftMask,           XK_period,                tagmon,         {.i = +1 } },
+	{ SUPERKEY|ShiftMask,           XK_period,                tagmon,         {.i = +1 } },	
+	{ SUPERKEY,                     XK_minus,		  setgaps,        {.i = -1 } },
+	{ SUPERKEY,                     XK_equal,		  setgaps,        {.i = +1 } },
+	{ SUPERKEY|ShiftMask,           XK_equal, 		  setgaps,        {.i = 0  } },
+	{ SUPERKEY|ShiftMask,           XK_t,			  togglealwaysontop, {0} },
+	{ SUPERKEY|ShiftMask,           XK_f,			  togglefullscr,  {0} },
 	TAGKEYS(                        XK_1,                                     0)
 	TAGKEYS(                        XK_2,                                     1)
 	TAGKEYS(                        XK_3,                                     2)
@@ -133,7 +146,6 @@ static Button buttons[] = {
 	/* click                event mask      button          function        argument */
 	{ ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
 	{ ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
-	{ ClkWinTitle,          0,              Button2,        zoom,           {0} },
 	{ ClkStatusText,        0,              Button2,        spawn,          {.v = termcmd } },
 	{ ClkClientWin,         SUPERKEY,       Button1,        movemouse,      {0} },
 	{ ClkClientWin,         SUPERKEY,       Button2,        togglefloating, {0} },

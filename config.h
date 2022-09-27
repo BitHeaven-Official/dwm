@@ -37,7 +37,7 @@ static const char* bhev[] = { "firefox", "bhev.ru", NULL };
 
 static const Launcher launchers[] = {
        /* command       name to display */
-	{ bhev,         "SHRT" },
+	{ bhev,         "" },
 };
 
 static const Rule rules[] = {

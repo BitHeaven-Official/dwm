@@ -8,6 +8,7 @@ static const unsigned int borderpx  = 4;
 static const unsigned int gappx     = 10;
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
+static const int showextrabar       = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const char statussep         = ';';
 static const int horizpadbar        = 5;
@@ -103,7 +104,8 @@ static Key keys[] = {
 	{ 0,                            XF86XK_AudioMute,         spawn,          {.v = volmute } },
 	{ SUPERKEY,                     XK_p,                     spawn,          {.v = dmenucmd } },
 	{ SUPERKEY,                     XK_Return,                spawn,          {.v = termcmd } },
-	{ SUPERKEY,                     XK_b,                     togglebar,      {0} },
+	{ SUPERKEY,                     XK_b,                     togglebar,      {.i = 1} },
+	{ SUPERKEY|ShiftMask,           XK_b,                     togglebar,      {.i = 2} },
 	{ ALTKEY,                       XK_Tab,                   focusstack,     {.i = +1 } },
 /*	{ SUPERKEY,                     XK_k,                     focusstack,     {.i = -1 } }, */
 	{ SUPERKEY,                     XK_i,                     incnmaster,     {.i = +1 } },

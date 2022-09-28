@@ -125,6 +125,7 @@ struct Monitor {
 	unsigned int sellt;
 	unsigned int tagset[2];
 	int showbar;
+	int showextrabar;
 	int topbar;
 	Client *clients;
 	Client *sel;
@@ -675,7 +676,8 @@ createmon(void)
 	m->tagset[0] = m->tagset[1] = 1;
 	m->mfact = mfact;
 	m->nmaster = nmaster;
-	m->showbar = showbar;
+   	m->showbar = showbar;
+	m->showextrabar = showextrabar;
 	m->topbar = topbar;
     m->gappx = gappx;
 	m->lt[0] = &layouts[0];
@@ -857,13 +859,12 @@ drawbar(Monitor *m)
 	unsigned int i, occ = 0, urg = 0;
 	Client *c;
 
-	if (!m->showbar)
-		return;
-
-	/* draw status first so it can be overdrawn by tags later */
-	if (m == selmon) { /* status is only drawn on selected monitor */
-        	tw = m->ww - drawstatusbar(m, bh, 0, stext);
-	}
+    if (m->showbar) {
+       	/* draw status first so it can be overdrawn by tags later */
+        if (m == selmon) { /* status is only drawn on selected monitor */
+   	        tw = m->ww - drawstatusbar(m, bh, 0, stext);
+        }
+    }
 
 	for (c = m->clients; c; c = c->next) {
 		occ |= c->tags;
@@ -902,12 +903,16 @@ drawbar(Monitor *m)
 		drw_rect(drw, x, 0, w - 2 * hpb, bh, 1, 1);
 	}
 
-	drw_map(drw, m->barwin, 0, 0, m->ww, bh);
+    if (m->showbar)
+       	drw_map(drw, m->barwin, 0, 0, m->ww, bh);
 
-    if (m == selmon) { /* extra status is only drawn on selected monitor */
-		sw = drawstatusbar(m, bh, 1, estext);
-		drw_map(drw, m->extrabarwin, 0, 0, m->ww, bh);
-	}
+    if (m->showextrabar) {
+        if (m == selmon) { /* extra status is only drawn on selected monitor */
+	    	sw = drawstatusbar(m, bh, 1, estext);
+		    drw_map(drw, m->extrabarwin, 0, 0, m->ww, bh);
+	    }
+    }
+
 }
 
 void
@@ -1670,10 +1675,11 @@ setfullscreen(Client *c, int fullscreen)
 void
 setgaps(const Arg *arg)
 {
-	if ((arg->i == 0) || (selmon->gappx + arg->i < 0))
+	if ((arg->i == 0) || (selmon->gappx + arg->i < 0)) {
 		selmon->gappx = 0;
-	else
+    } else {
 		selmon->gappx += arg->i;
+    }
 	arrange(selmon);
 }
 
@@ -1881,10 +1887,17 @@ tile(Monitor *m)
 void
 togglebar(const Arg *arg)
 {
-	selmon->showbar = !selmon->showbar;
-	updatebarpos(selmon);
-	XMoveResizeWindow(dpy, selmon->barwin,      selmon->wx + hpb, selmon->by + vpb,  selmon->ww - 2 * hpb, bh);
-	XMoveResizeWindow(dpy, selmon->extrabarwin, selmon->wx + hpb, selmon->eby - vpb, selmon->ww - 2 * hpb, bh);
+    if (arg->i == 1 || arg->i == 0) {
+       	selmon->showbar = !selmon->showbar;
+       	updatebarpos(selmon);
+    	XMoveResizeWindow(dpy, selmon->barwin,      selmon->wx + hpb, selmon->by + vpb,  selmon->ww - 2 * hpb, bh);
+    }
+    if (arg->i == 2 || arg->i == 0) {
+       	selmon->showextrabar = !selmon->showextrabar;
+       	updatebarpos(selmon);
+        XMoveResizeWindow(dpy, selmon->extrabarwin, selmon->wx + hpb, selmon->eby - vpb, selmon->ww - 2 * hpb, bh);
+    }
+
 	arrange(selmon);
 }
 
@@ -2049,14 +2062,19 @@ updatebarpos(Monitor *m)
 {
 	m->wy = m->my;
 	m->wh = m->mh;
-    m->wh -= bh * m->showbar * 2;
+    m->wh -= bh * m->showbar + bh * m->showextrabar;
    	m->wy = m->showbar ? m->wy + bh + vpb : m->wy;
 
-	if (m->showbar) {
+	if (m->showbar && m->showextrabar) {
 		m->by  = m->topbar ? m->wy - gappx - bh : m->wy + m->wh + gappx;
     	m->eby = m->topbar ? m->wy + m->wh + gappx - vpb * 2 : m->wy - gappx - bh - vpb * 2;
         m->wy = topbar ? m->wy : m->wy - vpb * 2;
         m->wh = topbar ? m->wh - vpb * 2 : m->wh + vpb * 2;
+	} else if (m->showbar || m->showextrabar) {
+		m->by  = m->topbar ? m->wy - gappx - bh : m->wy + m->wh + gappx;
+    	m->eby = m->topbar ? m->wy + m->wh + gappx - vpb : m->wy - gappx - bh - vpb;
+        m->wy = topbar ? m->wy : m->wy - vpb;
+        m->wh = topbar ? m->wh - vpb: m->wh + vpb;
 	} else {
 		m->by  = -bh - vpb;
 		m->eby = -bh + vpb;

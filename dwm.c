@@ -2047,17 +2047,15 @@ updatebars(void)
 void
 updatebarpos(Monitor *m)
 {
-	m->wy = m->my; // no
-	m->wh = m->mh; // no
-    m->wh -= bh * m->showbar * 2; // no
-   	m->wy = m->showbar ? m->wy + bh + vpb : m->wy; // no
+	m->wy = m->my;
+	m->wh = m->mh;
+    m->wh -= bh * m->showbar * 2;
+   	m->wy = m->showbar ? m->wy + bh + vpb : m->wy;
 
 	if (m->showbar) {
-//		m->wh = m->wh - gappx - bh;
 		m->by  = m->topbar ? m->wy - gappx - bh : m->wy + m->wh + gappx;
     	m->eby = m->topbar ? m->wy + m->wh + gappx - vpb * 2 : m->wy - gappx - bh - vpb * 2;
         m->wh -= vpb * 2;
-//		m->wy = m->topbar ? m->wy : m->wy;
 	} else {
 		m->by  = -bh - vpb;
 		m->eby = -bh + vpb;

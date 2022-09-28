@@ -9,6 +9,7 @@ static const unsigned int gappx     = 10;
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
+static const char statussep         = ';';
 static const int horizpadbar        = 5;
 static const int vertpadbar         = 8;
 static const int vertpadstat        = 0;
@@ -34,10 +35,12 @@ static const char *tags[] = { "", "", "3", "", "5", "6", "7", "8", "
 
 /* launcher commands (They must be NULL terminated) */
 static const char* bhev[] = { "firefox", "bhev.ru", NULL };
+static const char* youtube[] = { "firefox", "youtube.com", NULL };
 
 static const Launcher launchers[] = {
-       /* command       name to display */
+    /* command      name to display */
 	{ bhev,         "" },
+	{ youtube,      "" },
 };
 
 static const Rule rules[] = {

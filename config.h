@@ -32,7 +32,7 @@ static const char *colors[][3]      = {
 };
 
 /* tagging */
-static const char *tags[] = { "", "", "3", "", "5", "6", "7", "8", "" };
+static const char *tags[] = { "", "", "", "", "5", "6", "7", "8", "" };
 
 /* launcher commands (They must be NULL terminated) */
 static const char* bhev[] = { "firefox", "bhev.ru", NULL };

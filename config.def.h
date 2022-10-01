@@ -32,14 +32,16 @@ static const char *colors[][3]      = {
 };
 
 /* tagging */
-static const char *tags[] = { "", "", "3", "", "5", "6", "7", "8", "" };
+static const char *tags[] = { "", "", "", "", "", "6", "7", "", "" };
 
 /* launcher commands (They must be NULL terminated) */
+static const char* grabc[] = { "grabc", NULL };
 static const char* bhev[] = { "firefox", "bhev.ru", NULL };
 static const char* youtube[] = { "firefox", "youtube.com", NULL };
 
 static const Launcher launchers[] = {
     /* command      name to display */
+	{ grabc,        "" },
 	{ bhev,         "" },
 	{ youtube,      "" },
 };

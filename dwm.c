@@ -251,7 +251,7 @@ static void zoom(const Arg *arg);
 /* variables */
 static const char broken[] = "broken";
 static char stext[1024];
-static char estext[1024];
+static char estext[2048];
 static int screen;
 static int sw, sh;           /* X display screen geometry width, height */
 static int bh, blw = 0;      /* bar geometry */
@@ -736,14 +736,35 @@ dirtomon(int dir)
 
 int
 drawstatusbar(Monitor *m, int bh, int extra, char* stext) {
-    int ret, i, w, x, len;
-    short isCode = 0;
+    int ret, i, w, w2, x, x2, len, len2;
+    short isCode = 0, isCode2 = 0;
     char *text;
+    char *text2;
     char *p;
+    char *p2;
+    char stext2[1024];
 
-    len = strlen(stext) + 1 ;
+    if (extra) {
+    	char *st = strchr(stext, statussep);
+	    if (st) {
+		    *st = '\0'; st++;
+    		strncpy(stext2, st, sizeof(stext2) - 1);
+	    } else {
+		    stext2[0] = '\0';
+        }
+
+        len2 = strlen(stext2) + 1;
+        if (!(text2 = (char*) malloc(sizeof(char)*len2)))
+            die("malloc");
+
+        p2 = text2;
+        memcpy(text2, stext2, len2);
+    }
+
+    len = strlen(stext) + 1;
     if (!(text = (char*) malloc(sizeof(char)*len)))
         die("malloc");
+
     p = text;
     memcpy(text, stext, len);
 
@@ -773,17 +794,42 @@ drawstatusbar(Monitor *m, int bh, int extra, char* stext) {
     text = p;
 
     if (extra) {
+        w2 = 0;
+        i = -1;
+        while (text2[++i]) {
+            if (text2[i] == '^') {
+                if (!isCode2) {
+                    isCode2 = 1;
+                    text2[i] = '\0';
+                    w2 += TEXTW(text2) - lrpad;
+                    text2[i] = '^';
+                    if (text2[++i] == 'f')
+                        w2 += atoi(text2 + ++i);
+                } else {
+                    isCode2 = 0;
+                    text2 = text2 + i + 1;
+                    i = -1;
+                }
+            }
+        }
+        if (!isCode2)
+            w2 += TEXTW(text2) - lrpad;
+        else
+            isCode2 = 0;
+        text2 = p2;
+    }
+
+    if (extra) {
         w = m->ww;
 //        w = m->ww - w - 2 * hpb;
-        ret = x = 1;
+        ret = 1;
+        x = 0;
+        x2 = m->ww - w2 - 2 * hpb;
     } else {
 //        w += 2; /* 1px padding on both sides */
 //        ret = x = m->ww - w;
         ret = x = m->ww - w - 2 * hpb;
     }
-
-//    ret = m->ww - w;
-//    x = m->ww - w - 2 * hpb;
 
     drw_setscheme(drw, scheme[LENGTH(colors)]);
     drw->scheme[ColFg] = scheme[SchemeNorm][ColFg];
@@ -841,9 +887,71 @@ drawstatusbar(Monitor *m, int bh, int extra, char* stext) {
         }
     }
 
+    if (extra) {
+        drw_setscheme(drw, scheme[LENGTH(colors)]);
+        drw->scheme[ColFg] = scheme[SchemeNorm][ColFg];
+        drw->scheme[ColBg] = scheme[SchemeNorm][ColBg];
+        drw_rect(drw, m->ww - w2, 0, w2, bh, 1, 1);
+        x2++;
+
+        i = -1;
+        while (text2[++i]) {
+            if (text2[i] == '^' && !isCode2) {
+                isCode2 = 1;
+
+                text2[i] = '\0';
+                w2 = TEXTW(text2) - lrpad;
+                drw_text(drw, x2, vertpadstat, w2, bh - 2 * vertpadstat, 0, text2, 0);
+
+                x2 += w2;
+
+                /* process code */
+                while (text2[++i] != '^') {
+                    if (text2[i] == 'c') {
+                        char buf[8];
+                        memcpy(buf, (char*)text2+i+1, 7);
+                        buf[7] = '\0';
+                        drw_clr_create(drw, &drw->scheme[ColFg], buf);
+                        i += 7;
+                    } else if (text2[i] == 'b') {
+                        char buf[8];
+                        memcpy(buf, (char*)text2+i+1, 7);
+                        buf[7] = '\0';
+                        drw_clr_create(drw, &drw->scheme[ColBg], buf);
+                        i += 7;
+                    } else if (text2[i] == 'd') {
+                        drw->scheme[ColFg] = scheme[SchemeNorm][ColFg];
+                        drw->scheme[ColBg] = scheme[SchemeNorm][ColBg];
+                    } else if (text2[i] == 'r') {
+                        int rx = atoi(text2 + ++i);
+                        while (text2[++i] != ',');
+                        int ry = atoi(text2 + ++i);
+                        while (text2[++i] != ',');
+                        int rw = atoi(text2 + ++i);
+                        while (text2[++i] != ',');
+                        int rh = atoi(text2 + ++i);
+
+                        drw_rect(drw, rx + x2, ry, rw, rh, 1, 0);
+                    } else if (text2[i] == 'f') {
+                        x2 += atoi(text2 + ++i);
+                    }
+                }
+
+                text2 = text2 + i + 1;
+                i=-1;
+                isCode2 = 0;
+            }
+        }
+    }
+
     if (!isCode) {
         w = TEXTW(text) - lrpad;
         drw_text(drw, x, 0, w, bh, 0, text, 0);
+    }
+
+    if (!isCode2) {
+        w2 = TEXTW(text2) - lrpad;
+        drw_text(drw, m->ww - w2 - hpb * 2, 0, w2, bh, 0, text2, 0);
     }
 
     drw_setscheme(drw, scheme[SchemeNorm]);
@@ -1484,8 +1592,9 @@ resizemouse(const Arg *arg)
 				continue;
 			lasttime = ev.xmotion.time;
 
-			nw = MAX(ev.xmotion.x - ocx - 2 * c->bw + 1, 1);
-			nh = MAX(ev.xmotion.y - ocy - 2 * c->bw + 1, 1);
+            nw = MAX(ev.xmotion.x - ocx - 2 * c->bw + 1, 1);
+            nh = MAX(ev.xmotion.y - ocy - 2 * c->bw + 1, 1);
+
 			if (c->mon->wx + nw >= selmon->wx && c->mon->wx + nw <= selmon->wx + selmon->ww
 			&& c->mon->wy + nh >= selmon->wy && c->mon->wy + nh <= selmon->wy + selmon->wh)
 			{
@@ -2236,7 +2345,7 @@ updatesizehints(Client *c)
 void
 updatestatus(void)
 {
-    char text[2048];
+    char text[3072];
 	if (!gettextprop(root, XA_WM_NAME, text, sizeof(text))) {
 		strcpy(stext, "dwm-"VERSION);
         estext[0] = '\0';
@@ -2248,8 +2357,10 @@ updatestatus(void)
 		} else {
 			estext[0] = '\0';
 		}
+
 		strncpy(stext, text, sizeof(stext) - 1);
 	}
+
 	drawbar(selmon);
 }
 

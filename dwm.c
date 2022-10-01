@@ -824,7 +824,7 @@ drawstatusbar(Monitor *m, int bh, int extra, char* stext) {
 //        w = m->ww - w - 2 * hpb;
         ret = 1;
         x = 0;
-        x2 = m->ww - 2 * hpb;
+        x2 = m->ww - w2 - 2 * hpb;
     } else {
 //        w += 2; /* 1px padding on both sides */
 //        ret = x = m->ww - w;
@@ -901,7 +901,7 @@ drawstatusbar(Monitor *m, int bh, int extra, char* stext) {
 
                 text2[i] = '\0';
                 w2 = TEXTW(text2) - lrpad;
-                drw_text(drw, m->ww - w2, vertpadstat, w2, bh - 2 * vertpadstat, 0, text2, 0);
+                drw_text(drw, x2, vertpadstat, w2, bh - 2 * vertpadstat, 0, text2, 0);
 
                 x2 += w2;
 
@@ -931,7 +931,7 @@ drawstatusbar(Monitor *m, int bh, int extra, char* stext) {
                         while (text2[++i] != ',');
                         int rh = atoi(text2 + ++i);
 
-                        drw_rect(drw, rx, ry, rw, rh, 1, 0);
+                        drw_rect(drw, rx + x2, ry, rw, rh, 1, 0);
                     } else if (text2[i] == 'f') {
                         x2 += atoi(text2 + ++i);
                     }

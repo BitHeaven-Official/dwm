@@ -738,28 +738,24 @@ int
 drawstatusbar(Monitor *m, int bh, int extra, char* stext) {
     int ret, i, w, w2, x, x2, len, len2;
     short isCode = 0, isCode2 = 0;
-    char *text;
-    char *text2;
-    char *p;
-    char *p2;
+    char *text, *text2;
+    char *p, *p2;
     char stext2[1024];
 
-    if (extra) {
-    	char *st = strchr(stext, statussep);
-	    if (st) {
-		    *st = '\0'; st++;
-    		strncpy(stext2, st, sizeof(stext2) - 1);
-	    } else {
-		    stext2[0] = '\0';
-        }
-
-        len2 = strlen(stext2) + 1;
-        if (!(text2 = (char*) malloc(sizeof(char)*len2)))
-            die("malloc");
-
-        p2 = text2;
-        memcpy(text2, stext2, len2);
+    char *st = strchr(stext, statussep);
+    if (st) {
+        *st = '\0'; st++;
+        strncpy(stext2, st, sizeof(stext2) - 1);
+    } else {
+        stext2[0] = '\0';
     }
+
+    len2 = strlen(stext2) + 1;
+    if (!(text2 = (char*) malloc(sizeof(char)*len2)))
+        die("malloc");
+
+    p2 = text2;
+    memcpy(text2, stext2, len2);
 
     len = strlen(stext) + 1;
     if (!(text = (char*) malloc(sizeof(char)*len)))

@@ -824,7 +824,7 @@ drawstatusbar(Monitor *m, int bh, int extra, char* stext) {
     } else {
 //        w += 2; /* 1px padding on both sides */
         ret = m->ww - w;
-        x = m->ww - w - 2 * hpb;
+        x = ret - 2 * hpb;
     }
 
     drw_setscheme(drw, scheme[LENGTH(colors)]);

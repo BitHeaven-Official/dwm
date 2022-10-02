@@ -960,6 +960,8 @@ void
 drawbar(Monitor *m)
 {
 	int x, w, tw = 0;
+    int boxs = drw->fonts->h / 9;
+	int boxw = drw->fonts->h / 6 + 2;
 	unsigned int i, occ = 0, urg = 0;
 	Client *c;
 
@@ -1003,8 +1005,18 @@ drawbar(Monitor *m)
 	}
 
 	if ((w = m->ww - tw - x) > bh) {
-		drw_setscheme(drw, scheme[SchemeNorm]);
-		drw_rect(drw, x, 0, w - 2 * hpb, bh, 1, 1);
+        if (m->sel) {
+			drw_setscheme(drw, scheme[m == selmon ? SchemeSel : SchemeNorm]);
+			drw_text(drw, x, 0, w - 2 * hpb, bh, lrpad / 2, m->sel->name, 0);
+			if (m->sel->isfloating) {
+				drw_rect(drw, x + boxs, boxs, boxw, boxw, m->sel->isfixed, 0);
+				if (m->sel->isalwaysontop)
+					drw_rect(drw, x + boxs, bh - boxw, boxw, boxw, 0, 0);
+			}
+    	} else {
+		    drw_setscheme(drw, scheme[SchemeNorm]);
+		    drw_rect(drw, x, 0, w - 2 * hpb, bh, 1, 1);
+        }
 	}
 
     if (m->showbar)
@@ -1506,8 +1518,11 @@ propertynotify(XEvent *e)
 			drawbars();
 			break;
 		}
-		if (ev->atom == XA_WM_NAME || ev->atom == netatom[NetWMName])
+		if (ev->atom == XA_WM_NAME || ev->atom == netatom[NetWMName]) {
 			updatetitle(c);
+			if (c == c->mon->sel)
+				drawbar(c->mon);
+		}
 		if (ev->atom == netatom[NetWMWindowType])
 			updatewindowtype(c);
 	}

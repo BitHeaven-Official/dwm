@@ -35,11 +35,13 @@ static const char *colors[][3]      = {
 static const char *tags[] = { "", "", "3", "", "5", "6", "7", "8", "" };
 
 /* launcher commands (They must be NULL terminated) */
+static const char* grabc[] = { "grabc", "|", "tr", "-d", "'\n'", "|", "xclip", "-selection", "clipboard", NULL };
 static const char* bhev[] = { "firefox", "bhev.ru", NULL };
 static const char* youtube[] = { "firefox", "youtube.com", NULL };
 
 static const Launcher launchers[] = {
     /* command      name to display */
+	{ grabc,        "" },
 	{ bhev,         "" },
 	{ youtube,      "" },
 };
@@ -91,6 +93,8 @@ static const char *screenshotarea[] = { "scrsht", "-s", NULL };
 static const char *volup[] = { "pactl", "set-sink-volume", "0", "+5%", NULL };
 static const char *voldown[] = { "pactl", "set-sink-volume", "0", "-5%", NULL };
 static const char *volmute[] = { "pactl", "set-sink-mute", "0", "toggle", NULL };
+
+static const char *backlightup[] = { "s", "set-sink-mute", "0", "toggle", NULL };
 
 static const char *dmenucmd[] = { "dmenu_run", "-g", "10", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *termcmd[]  = { "st", NULL };

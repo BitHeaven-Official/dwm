@@ -5,21 +5,21 @@
 /* appearance */
 
 static const unsigned int borderpx  = 4;
-static const unsigned int gappx     = 10;
+static const unsigned int gappx     = 15;
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int showextrabar       = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const char statussep         = ';';
-static const int horizpadbar        = 5;
-static const int vertpadbar         = 8;
+static const int horizpadbar        = 8;
+static const int vertpadbar         = 12;
 static const int vertpadstat        = 0;
 static const char *fonts[]          = {
-    "Ubuntu Mono:style=Bold:size=10:antialias=true:autohint=true",
-    "Font Awesome 6 Free Solid:style=Solid:size=10:antialias=true:autohint=true",
-    "Font Awesome 6 Brands Regular:style=Regular:size=10:antialias=true:autohint=true"
+    "Ubuntu Mono:style=Bold:size=12:antialias=true:autohint=true",
+    "Font Awesome 6 Free Solid:style=Solid:size=12:antialias=true:autohint=true",
+    "Font Awesome 6 Brands Regular:style=Regular:size=12:antialias=true:autohint=true"
 };
-static const char dmenufont[]       = "Ubuntu Mono:size=10";
+static const char dmenufont[]       = "Ubuntu Mono:size=12";
 static const char col_gray1[]       = "#222222";
 static const char col_gray2[]       = "#444444";
 static const char col_gray3[]       = "#bbbbbb";
@@ -35,11 +35,13 @@ static const char *colors[][3]      = {
 static const char *tags[] = { "", "", "3", "", "5", "6", "7", "8", "" };
 
 /* launcher commands (They must be NULL terminated) */
+static const char* grabc[] = { "grabc", "|", "tr", "-d", "'\n'", "|", "xclip", "-selection", "clipboard", NULL };
 static const char* bhev[] = { "firefox", "bhev.ru", NULL };
 static const char* youtube[] = { "firefox", "youtube.com", NULL };
 
 static const Launcher launchers[] = {
     /* command      name to display */
+	{ grabc,        "" },
 	{ bhev,         "" },
 	{ youtube,      "" },
 };
@@ -92,7 +94,9 @@ static const char *volup[] = { "pactl", "set-sink-volume", "0", "+5%", NULL };
 static const char *voldown[] = { "pactl", "set-sink-volume", "0", "-5%", NULL };
 static const char *volmute[] = { "pactl", "set-sink-mute", "0", "toggle", NULL };
 
-static const char *dmenucmd[] = { "dmenu_run", "-g", "10", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
+static const char *backlightup[] = { "s", "set-sink-mute", "0", "toggle", NULL };
+
+static const char *dmenucmd[] = { "dmenu_run", "-g", "15", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *termcmd[]  = { "st", NULL };
 
 static Key keys[] = {

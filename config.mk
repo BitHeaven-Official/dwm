@@ -1,5 +1,5 @@
 # dwm version
-VERSION = bit.dwm_1.0
+VERSION = bit.dwm_1.1
 
 # Customize below to fit your system
 

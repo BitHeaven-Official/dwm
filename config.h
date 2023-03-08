@@ -9,6 +9,7 @@ static const unsigned int gappx     = 15;
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int showextrabar       = 1;        /* 0 means no bar */
+// TODO: FIX THAT SHIT
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const char statussep         = ';';
 static const int horizpadbar        = 8;
@@ -65,11 +66,14 @@ static const int nmaster     = 1;    /* number of clients in master area */
 static const int resizehints = 1;    /* 1 means respect size hints in tiled resizals */
 static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen window */
 
+#include "layouts.c"
 static const Layout layouts[] = {
 	/* symbol     arrange function */
 	{ "[]=",      tile },    /* first entry is default */
 	{ "><>",      NULL },    /* no layout function means floating behavior */
 	{ "[M]",      monocle },
+	{ "HHH",      grid },
+	{ "###",      gaplessgrid },
 };
 
 /* key definitions */
@@ -125,6 +129,8 @@ static Key keys[] = {
 	{ SUPERKEY,                     XK_t,                     setlayout,      {.v = &layouts[0]} },
 	{ SUPERKEY,                     XK_f,                     setlayout,      {.v = &layouts[1]} },
 	{ SUPERKEY,                     XK_m,                     setlayout,      {.v = &layouts[2]} },
+	{ SUPERKEY,                     XK_g,			  setlayout,      {.v = &layouts[3]} },
+	{ SUPERKEY|ShiftMask,           XK_g,			  setlayout,      {.v = &layouts[4]} },
 /*	{ SUPERKEY,                     XK_space,                 setlayout,      {0} }, */
 	{ SUPERKEY|ShiftMask,           XK_space,                 togglefloating, {0} },
 	{ SUPERKEY,                     XK_0,                     view,           {.ui = ~0 } },

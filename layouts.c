@@ -1,3 +1,4 @@
+// TODO: FIX GAPS IN GRID LAYOUT
 void
 grid(Monitor *m) {
 	unsigned int i, n, cx, cy, cw, ch, aw, ah, cols, rows;

@@ -69,11 +69,11 @@ static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen win
 #include "layouts.c"
 static const Layout layouts[] = {
 	/* symbol     arrange function */
+	{ "###",      gaplessgrid },
 	{ "[]=",      tile },    /* first entry is default */
 	{ "><>",      NULL },    /* no layout function means floating behavior */
 	{ "[M]",      monocle },
 	{ "HHH",      grid },
-	{ "###",      gaplessgrid },
 };
 
 /* key definitions */
@@ -126,11 +126,11 @@ static Key keys[] = {
 	{ SUPERKEY|ShiftMask,           XK_Tab,                   view,           {.ui = -1 } }, // prev tab
 	{ SUPERKEY|ControlMask,         XK_Tab,                   view,           {.ui = -2 } }, // last tab
 	{ SUPERKEY,                     XK_q,                     killclient,     {0} },
-	{ SUPERKEY,                     XK_t,                     setlayout,      {.v = &layouts[0]} },
-	{ SUPERKEY,                     XK_f,                     setlayout,      {.v = &layouts[1]} },
-	{ SUPERKEY,                     XK_m,                     setlayout,      {.v = &layouts[2]} },
-	{ SUPERKEY,                     XK_g,			  setlayout,      {.v = &layouts[3]} },
+	{ SUPERKEY,                     XK_t,                     setlayout,      {.v = &layouts[1]} },
+	{ SUPERKEY,                     XK_f,                     setlayout,      {.v = &layouts[2]} },
+	{ SUPERKEY,                     XK_m,                     setlayout,      {.v = &layouts[3]} },
 	{ SUPERKEY|ShiftMask,           XK_g,			  setlayout,      {.v = &layouts[4]} },
+	{ SUPERKEY,                     XK_g,			  setlayout,      {.v = &layouts[0]} },
 /*	{ SUPERKEY,                     XK_space,                 setlayout,      {0} }, */
 	{ SUPERKEY|ShiftMask,           XK_space,                 togglefloating, {0} },
 	{ SUPERKEY,                     XK_0,                     view,           {.ui = ~0 } },

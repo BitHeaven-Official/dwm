@@ -482,8 +482,6 @@ buttonpress(XEvent *e)
 			goto execute_handler;
 		}
 
-		x += blw;
-
 		for(i = 0; i < LENGTH(launchers); i++) {
 			x += TEXTW(launchers[i].name);
 

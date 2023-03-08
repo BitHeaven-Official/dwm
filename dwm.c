@@ -133,10 +133,10 @@ struct Monitor {
 	int nmaster;
 	int num;
 	int by;               /* bar geometry */
-	int eby;               /* bar geometry */
+	int eby;              /* bar geometry */
 	int mx, my, mw, mh;   /* screen size */
 	int wx, wy, ww, wh;   /* window area  */
-    int gappx;
+	int gappx;
 	unsigned int seltags;
 	unsigned int sellt;
 	unsigned int tagset[2];

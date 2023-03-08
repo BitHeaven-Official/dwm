@@ -273,7 +273,7 @@ static char stext[1024];
 static char estext[2048];
 static int screen;
 static int sw, sh;           /* X display screen geometry width, height */
-static int bh, blw = 0;      /* bar geometry */
+static int bh;               /* bar height */
 static int lrpad;            /* sum of left and right padding for text */
 static int vpb;
 static int hpb;
@@ -477,7 +477,7 @@ buttonpress(XEvent *e)
 			click = ClkTagBar;
 			arg.ui = 1 << i;
 			goto execute_handler;
-		} else if (ev->x < x + blw) {
+		} else if (ev->x < x + TEXTW(selmon->ltsymbol)) {
 			click = ClkLtSymbol;
 			goto execute_handler;
 		}
@@ -1013,7 +1013,7 @@ drawbar(Monitor *m)
 
 		x += w;
 	}
-	w = blw = TEXTW(m->ltsymbol);
+	w = TEXTW(m->ltsymbol);
 	drw_setscheme(drw, scheme[SchemeNorm]);
 	x = drw_text(drw, x, 0, w, bh, lrpad / 2, m->ltsymbol, 0);
 
@@ -2010,8 +2010,6 @@ sigchld(int unused)
 void
 spawn(const Arg *arg)
 {
-	if (arg->v == dmenucmd)
-		dmenumon[0] = '0' + selmon->num;
 	if (fork() == 0) {
 		if (dpy)
 			close(ConnectionNumber(dpy));

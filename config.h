@@ -37,7 +37,7 @@ static char *colors[][3]         = {
 static const char *tags[] = { "", "", "3", "", "5", "6", "7", "8", "" };
 
 /* launcher commands (They must be NULL terminated) */
-static const char* grabc[] = { "grabc", "|", "tr", "-d", "'\n'", "|", "xclipboard", "-selection", "clipboard", NULL };
+static const char* grabc[] = { "grabc", "|", "tr", "-d", "'\n'", "|", "xclip", "-selection", "clipboard", NULL };
 static const char* bhev[] = { "firefox", "bhev.ru", NULL };
 static const char* youtube[] = { "firefox", "youtube.com", NULL };
 
@@ -136,7 +136,7 @@ static const Key keys[] = {
 	{ SUPERKEY,                     XK_comma,                 focusmon,       {.i = -1 } },
 	{ SUPERKEY,                     XK_period,                focusmon,       {.i = +1 } },
 	{ SUPERKEY|ShiftMask,           XK_comma,                 tagmon,         {.i = -1 } },
-	{ SUPERKEY|ShiftMask,           XK_period,                tagmon,         {.i = +1 } },	
+	{ SUPERKEY|ShiftMask,           XK_period,                tagmon,         {.i = +1 } },
 	{ SUPERKEY,                     XK_minus,		  setgaps,        {.i = -1 } },
 	{ SUPERKEY,                     XK_equal,		  setgaps,        {.i = +1 } },
 	{ SUPERKEY|ShiftMask,           XK_equal, 		  setgaps,        {.i = 0  } },

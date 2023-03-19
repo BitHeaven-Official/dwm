@@ -34,7 +34,7 @@ static char *colors[][3]         = {
 };
 
 /* tagging */
-static const char *tags[] = { "", "", "3", "", "5", "6", "7", "8", "" };
+static const char *tags[] = { "", "", "", "", "5", "6", "", "", "" };
 
 /* launcher commands (They must be NULL terminated) */
 static const char* grabc[] = { "grabc", "|", "tr", "-d", "'\n'", "|", "xclip", "-selection", "clipboard", NULL };
@@ -53,11 +53,26 @@ static const Rule rules[] = {
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class       instance    title       tags mask     isfloating   monitor */
-	{ "Gimp",      NULL,       NULL,       0,            1,           -1 },
-	{ "Firefox",   NULL,       NULL,       1 << 8,       0,           -1 },
-	{ "xwinwrap",  NULL,       NULL,       1 << 9,       0,           -1 },
-	{ NULL,        NULL,       "broken",   1 << 9,       0,           -1 },
+	/* class		instance	title		tags mask	isfloating	monitor */
+	// ----- 1 -----
+	{ "st-256color",	NULL,		NULL,		0,		1,		-1 },
+	// ----- 2 -----
+	{ "Code",		NULL,		NULL,		1 << 1,		0,		-1 },
+	// ----- 3 -----
+	{ "KeePassXC",		NULL,		NULL,		1 << 2,		0,		-1 },
+	// ----- 4 -----
+	{ "TelegramDesktop",	NULL,		NULL,		1 << 3,		0,		-1 },
+	{ "discord",		NULL,		NULL,		1 << 3,		0,		-1 },
+	// ----- 7 -----
+	{ "QjackCtl",		NULL,		NULL,		1 << 6,		0,		-1 },
+	{ "PatchMatrix",	NULL,		NULL,		1 << 6,		0,		-1 },
+	{ "Blueman-manager",	NULL,		NULL,		1 << 6,		0,		-1 },
+	{ "corectrl",		NULL,		NULL,		1 << 6,		0,		-1 },
+	// ----- 9 -----
+	{ "firefox",		NULL,		NULL,		1 << 8,		0,		-1 },
+	// ----- OTHER -----
+	{ "xwinwrap",		NULL,		NULL,		1 << 9,		0,		-1 },
+	{ NULL,			NULL,		"broken",	1 << 9,		0,		-1 },
 };
 
 /* layout(s) */

@@ -55,7 +55,7 @@ static const Rule rules[] = {
 	 */
 	/* class		instance	title		tags mask	isfloating	monitor */
 	// ----- 1 -----
-	{ "st-256color",	NULL,		NULL,		0,		1,		-1 },
+	{ "st-256color",	NULL,		NULL,		0,		0,		-1 },
 	// ----- 2 -----
 	{ "Code",		NULL,		NULL,		1 << 1,		0,		-1 },
 	// ----- 3 -----
@@ -64,7 +64,7 @@ static const Rule rules[] = {
 	{ "TelegramDesktop",	NULL,		NULL,		1 << 3,		0,		-1 },
 	{ "discord",		NULL,		NULL,		1 << 3,		0,		-1 },
 	// ----- 7 -----
-	{ "QjackCtl",		NULL,		NULL,		1 << 6,		0,		-1 },
+	{ "QjackCtl",		NULL,		NULL,		1 << 6,		1,		-1 },
 	{ "PatchMatrix",	NULL,		NULL,		1 << 6,		0,		-1 },
 	{ "Blueman-manager",	NULL,		NULL,		1 << 6,		0,		-1 },
 	{ "corectrl",		NULL,		NULL,		1 << 6,		0,		-1 },

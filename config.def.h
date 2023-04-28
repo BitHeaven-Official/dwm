@@ -55,24 +55,28 @@ static const Rule rules[] = {
 	 */
 	/* class		instance	title		tags mask	isfloating	monitor */
 	// ----- 1 -----
-	{ "st-256color",	NULL,		NULL,		0,		0,		-1 },
+	{ "st-256color",		NULL,		NULL,		0,			0,		-1 },
 	// ----- 2 -----
-	{ "Code",		NULL,		NULL,		1 << 1,		0,		-1 },
+	{ "Code",				NULL,		NULL,		1 << 1,		0,		-1 },
 	// ----- 3 -----
-	{ "KeePassXC",		NULL,		NULL,		1 << 2,		0,		-1 },
+	{ "thunderbird",		NULL,		NULL,		1 << 2,		0,		-1 },
+	{ "KeePassXC",			NULL,		NULL,		1 << 2,		0,		-1 },
 	// ----- 4 -----
 	{ "TelegramDesktop",	NULL,		NULL,		1 << 3,		0,		-1 },
-	{ "discord",		NULL,		NULL,		1 << 3,		0,		-1 },
+	{ "discord",			NULL,		NULL,		1 << 3,		0,		-1 },
+	// ----- 5 -----
+	{ "Steam",				NULL,		NULL,		1 << 4,		0,		-1 },
+	{ "steamwebhelper",		NULL,		NULL,		1 << 4,		0,		-1 },
 	// ----- 7 -----
-	{ "QjackCtl",		NULL,		NULL,		1 << 6,		1,		-1 },
-	{ "PatchMatrix",	NULL,		NULL,		1 << 6,		0,		-1 },
+	{ "QjackCtl",			NULL,		NULL,		1 << 6,		1,		-1 },
+	{ "PatchMatrix",		NULL,		NULL,		1 << 6,		0,		-1 },
 	{ "Blueman-manager",	NULL,		NULL,		1 << 6,		0,		-1 },
-	{ "corectrl",		NULL,		NULL,		1 << 6,		0,		-1 },
+	{ "corectrl",			NULL,		NULL,		1 << 6,		0,		-1 },
 	// ----- 9 -----
-	{ "firefox",		NULL,		NULL,		1 << 8,		0,		-1 },
+	{ "firefox",			NULL,		NULL,		1 << 8,		0,		-1 },
 	// ----- OTHER -----
-	{ "xwinwrap",		NULL,		NULL,		1 << 9,		0,		-1 },
-	{ NULL,			NULL,		"broken",	1 << 9,		0,		-1 },
+	{ "xwinwrap",			NULL,		NULL,		1 << 9,		0,		-1 },
+	{ NULL,					NULL,		"broken",	1 << 9,		0,		-1 },
 };
 
 /* layout(s) */
@@ -113,76 +117,78 @@ static const char *voldown[] = { "pactl", "set-sink-volume", "0", "-5%", NULL };
 static const char *volmute[] = { "pactl", "set-sink-mute", "0", "toggle", NULL };
 
 static const char *backlightup[] = { "s", "set-sink-mute", "0", "toggle", NULL };
+static const char *lockcmd[]  = { "slock", NULL };
 
 static const char *dmenucmd[] = { "dmenu_run", "-g", "15", "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbordercolor, "-sf", selfgcolor, NULL };
 static const char *termcmd[]  = { "st", NULL };
 
 static const Key keys[] = {
-	/* modifier                     key                       function        argument */
-	{ 0,                            XK_Print,                 spawn,          {.v = screenshot } },
-	{ ShiftMask,                    XK_Print,                 spawn,          {.v = screenshotarea } },
-	{ 0,                            XF86XK_AudioRaiseVolume,  spawn,          {.v = volup } },
-	{ 0,                            XF86XK_AudioLowerVolume,  spawn,          {.v = voldown } },
-	{ 0,                            XF86XK_AudioMute,         spawn,          {.v = volmute } },
-	{ SUPERKEY,                     XK_p,                     spawn,          {.v = dmenucmd } },
-	{ SUPERKEY,                     XK_Return,                spawn,          {.v = termcmd } },
-	{ SUPERKEY,                     XK_b,                     togglebar,      {.i = 1} },
-	{ SUPERKEY|ShiftMask,           XK_b,                     togglebar,      {.i = 2} },
-	{ ALTKEY,                       XK_Tab,                   focusstack,     {.i = +1 } },
-/*	{ SUPERKEY,                     XK_k,                     focusstack,     {.i = -1 } }, */
-	{ SUPERKEY,                     XK_i,                     incnmaster,     {.i = +1 } },
-	{ SUPERKEY,                     XK_d,                     incnmaster,     {.i = -1 } },
-	{ SUPERKEY,                     XK_h,                     setmfact,       {.f = -0.05} },
-	{ SUPERKEY,                     XK_l,                     setmfact,       {.f = +0.05} },
-	{ SUPERKEY|ShiftMask,           XK_Return,                zoom,           {0} },
-	{ SUPERKEY,                     XK_Tab,                   view,           {.ui =  0 } }, // next tab
-	{ SUPERKEY|ShiftMask,           XK_Tab,                   view,           {.ui = -1 } }, // prev tab
-	{ SUPERKEY|ControlMask,         XK_Tab,                   view,           {.ui = -2 } }, // last tab
-	{ SUPERKEY,                     XK_q,                     killclient,     {0} },
-	{ SUPERKEY,                     XK_t,                     setlayout,      {.v = &layouts[1]} },
-	{ SUPERKEY,                     XK_f,                     setlayout,      {.v = &layouts[2]} },
-	{ SUPERKEY,                     XK_m,                     setlayout,      {.v = &layouts[3]} },
-	{ SUPERKEY|ShiftMask,           XK_g,			  setlayout,      {.v = &layouts[4]} },
-	{ SUPERKEY,                     XK_g,			  setlayout,      {.v = &layouts[0]} },
-/*	{ SUPERKEY,                     XK_space,                 setlayout,      {0} }, */
-	{ SUPERKEY|ShiftMask,           XK_space,                 togglefloating, {0} },
-	{ SUPERKEY,                     XK_0,                     view,           {.ui = ~0 } },
-	{ SUPERKEY|ShiftMask,           XK_0,                     tag,            {.ui = ~0 } },
-	{ SUPERKEY,                     XK_comma,                 focusmon,       {.i = -1 } },
-	{ SUPERKEY,                     XK_period,                focusmon,       {.i = +1 } },
-	{ SUPERKEY|ShiftMask,           XK_comma,                 tagmon,         {.i = -1 } },
-	{ SUPERKEY|ShiftMask,           XK_period,                tagmon,         {.i = +1 } },
-	{ SUPERKEY,                     XK_minus,		  setgaps,        {.i = -1 } },
-	{ SUPERKEY,                     XK_equal,		  setgaps,        {.i = +1 } },
-	{ SUPERKEY|ShiftMask,           XK_equal, 		  setgaps,        {.i = 0  } },
-	{ SUPERKEY|ShiftMask,           XK_t,			  togglealwaysontop, {0} },
-	{ SUPERKEY|ShiftMask,           XK_f,			  togglefullscr,  {0} },
-	{ SUPERKEY,                     XK_F5,			  xrdb,           {.v = NULL } },
-	TAGKEYS(                        XK_1,                                     0)
-	TAGKEYS(                        XK_2,                                     1)
-	TAGKEYS(                        XK_3,                                     2)
-	TAGKEYS(                        XK_4,                                     3)
-	TAGKEYS(                        XK_5,                                     4)
-	TAGKEYS(                        XK_6,                                     5)
-	TAGKEYS(                        XK_7,                                     6)
-	TAGKEYS(                        XK_8,                                     7)
-	TAGKEYS(                        XK_9,                                     8)
-	{ SUPERKEY|ShiftMask,           XK_q,                     quitprompt,     {0} },
+	/* modifier						key							function			argument */
+	{ 0,							XF86XK_ModeLock,			spawn,				{.v = lockcmd } },
+	{ 0,							XK_Print,					spawn,				{.v = screenshot } },
+	{ ShiftMask,					XK_Print,					spawn,				{.v = screenshotarea } },
+	{ 0,							XF86XK_AudioRaiseVolume,	spawn,				{.v = volup } },
+	{ 0,							XF86XK_AudioLowerVolume,	spawn,				{.v = voldown } },
+	{ 0,							XF86XK_AudioMute,			spawn,				{.v = volmute } },
+	{ SUPERKEY,						XK_p,						spawn,				{.v = dmenucmd } },
+	{ SUPERKEY,						XK_Return,					spawn,				{.v = termcmd } },
+	{ SUPERKEY,						XK_b,						togglebar,			{.i = 1} },
+	{ SUPERKEY|ShiftMask,			XK_b,						togglebar,			{.i = 2} },
+	{ ALTKEY,						XK_Tab,						focusstack,			{.i = +1 } },
+/*	{ SUPERKEY,						XK_k,						focusstack,			{.i = -1 } }, */
+	{ SUPERKEY,						XK_i,						incnmaster,			{.i = +1 } },
+	{ SUPERKEY,						XK_d,						incnmaster,			{.i = -1 } },
+	{ SUPERKEY,						XK_h,						setmfact,			{.f = -0.05} },
+	{ SUPERKEY,						XK_l,						setmfact,			{.f = +0.05} },
+	{ SUPERKEY|ShiftMask,			XK_Return,					zoom,				{0} },
+	{ SUPERKEY,						XK_Tab,						view,				{.ui =  0 } }, // next tab
+	{ SUPERKEY|ShiftMask,			XK_Tab,						view,				{.ui = -1 } }, // prev tab
+	{ SUPERKEY|ControlMask,			XK_Tab,						view,				{.ui = -2 } }, // last tab
+	{ SUPERKEY,						XK_q,						killclient,			{0} },
+	{ SUPERKEY,						XK_t,						setlayout,			{.v = &layouts[1]} },
+	{ SUPERKEY,						XK_f,						setlayout,			{.v = &layouts[2]} },
+	{ SUPERKEY,						XK_m,						setlayout,			{.v = &layouts[3]} },
+	{ SUPERKEY|ShiftMask,			XK_g,						setlayout,			{.v = &layouts[4]} },
+	{ SUPERKEY,						XK_g,						setlayout,			{.v = &layouts[0]} },
+/*	{ SUPERKEY,						XK_space,					setlayout,			{0} }, */
+	{ SUPERKEY|ShiftMask,			XK_space,					togglefloating,		{0} },
+	{ SUPERKEY,						XK_0,						view,				{.ui = ~0 } },
+	{ SUPERKEY|ShiftMask,			XK_0,						tag,				{.ui = ~0 } },
+	{ SUPERKEY,						XK_comma,					focusmon,			{.i = -1 } },
+	{ SUPERKEY,						XK_period,					focusmon,			{.i = +1 } },
+	{ SUPERKEY|ShiftMask,			XK_comma,					tagmon,				{.i = -1 } },
+	{ SUPERKEY|ShiftMask,			XK_period,					tagmon,				{.i = +1 } },
+	{ SUPERKEY,						XK_minus,					setgaps,			{.i = -1 } },
+	{ SUPERKEY,						XK_equal,					setgaps,			{.i = +1 } },
+	{ SUPERKEY|ShiftMask,			XK_equal,					setgaps,			{.i = 0  } },
+	{ SUPERKEY|ShiftMask,			XK_t,						togglealwaysontop,	{0} },
+	{ SUPERKEY|ShiftMask,			XK_f,						togglefullscr,		{0} },
+	{ SUPERKEY,						XK_F5,						xrdb,				{.v = NULL } },
+	TAGKEYS(						XK_1,											0)
+	TAGKEYS(						XK_2,											1)
+	TAGKEYS(						XK_3,											2)
+	TAGKEYS(						XK_4,											3)
+	TAGKEYS(						XK_5,											4)
+	TAGKEYS(						XK_6,											5)
+	TAGKEYS(						XK_7,											6)
+	TAGKEYS(						XK_8,											7)
+	TAGKEYS(						XK_9,											8)
+	{ SUPERKEY|ShiftMask,			XK_q,						quitprompt,			{0} },
 };
 
 /* button definitions */
 /* click can be ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle, ClkClientWin, or ClkRootWin */
 static const Button buttons[] = {
-	/* click                event mask      button          function        argument */
-	{ ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
-	{ ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
-	{ ClkStatusText,        0,              Button2,        spawn,          {.v = termcmd } },
-	{ ClkClientWin,         ALTKEY,         Button1,        movemouse,      {0} },
-	{ ClkClientWin,         ALTKEY,         Button2,        togglefloating, {0} },
-	{ ClkClientWin,         ALTKEY,         Button3,        resizemouse,    {0} },
-	{ ClkTagBar,            0,              Button1,        view,           {0} },
-	{ ClkTagBar,            0,              Button3,        toggleview,     {0} },
-	{ ClkTagBar,            SUPERKEY,       Button1,        tag,            {0} },
-	{ ClkTagBar,            SUPERKEY,       Button3,        toggletag,      {0} },
+	/* click				event mask		button			function		argument */
+	{ ClkLtSymbol,			0,				Button1,		setlayout,		{0} },
+	{ ClkLtSymbol,			0,				Button3,		setlayout,		{.v = &layouts[2]} },
+	{ ClkStatusText,		0,				Button2,		spawn,			{.v = termcmd } },
+	{ ClkClientWin,			ALTKEY,			Button1,		movemouse,		{0} },
+	{ ClkClientWin,			ALTKEY,			Button2,		togglefloating,	{0} },
+	{ ClkClientWin,			ALTKEY,			Button3,		resizemouse,	{0} },
+	{ ClkTagBar,			0,				Button1,		view,			{0} },
+	{ ClkTagBar,			0,				Button3,		toggleview,		{0} },
+	{ ClkTagBar,			SUPERKEY,		Button1,		tag,			{0} },
+	{ ClkTagBar,			SUPERKEY,		Button3,		toggletag,		{0} },
 };
 

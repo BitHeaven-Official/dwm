@@ -59,10 +59,13 @@ static const Rule rules[] = {
 	// ----- 2 -----
 	{ "Code",		NULL,		NULL,		1 << 1,		0,		-1 },
 	// ----- 3 -----
+	{ "thunderbird",	NULL,		NULL,		1 << 2,		0,		-1 },
 	{ "KeePassXC",		NULL,		NULL,		1 << 2,		0,		-1 },
 	// ----- 4 -----
 	{ "TelegramDesktop",	NULL,		NULL,		1 << 3,		0,		-1 },
 	{ "discord",		NULL,		NULL,		1 << 3,		0,		-1 },
+	// ----- 5 -----
+	{ "Steam",		NULL,		NULL,		1 << 4,		0,		-1 },
 	// ----- 7 -----
 	{ "QjackCtl",		NULL,		NULL,		1 << 6,		1,		-1 },
 	{ "PatchMatrix",	NULL,		NULL,		1 << 6,		0,		-1 },
@@ -113,12 +116,14 @@ static const char *voldown[] = { "pactl", "set-sink-volume", "0", "-5%", NULL };
 static const char *volmute[] = { "pactl", "set-sink-mute", "0", "toggle", NULL };
 
 static const char *backlightup[] = { "s", "set-sink-mute", "0", "toggle", NULL };
+static const char *lockcmd[]  = { "slock", NULL };
 
 static const char *dmenucmd[] = { "dmenu_run", "-g", "15", "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbordercolor, "-sf", selfgcolor, NULL };
 static const char *termcmd[]  = { "st", NULL };
 
 static const Key keys[] = {
 	/* modifier                     key                       function        argument */
+	{ 0,                            XF86XK_ModeLock,          spawn,          {.v = lockcmd } },
 	{ 0,                            XK_Print,                 spawn,          {.v = screenshot } },
 	{ ShiftMask,                    XK_Print,                 spawn,          {.v = screenshotarea } },
 	{ 0,                            XF86XK_AudioRaiseVolume,  spawn,          {.v = volup } },
